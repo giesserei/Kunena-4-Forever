@@ -198,9 +198,11 @@ class KunenaImage extends KunenaCompatImage
 						$a++;
 					}
 				}
-				ImageSetPixel($dst_img, $x, $y, ImageColorClosest($dst_img, $r / $a, $g / $a, $b / $a));
-			}
-		}
+                if ($a > 0) { // patch chdh 2021-06-14
+				   ImageSetPixel($dst_img, $x, $y, ImageColorClosest($dst_img, $r / $a, $g / $a, $b / $a));
+			    }
+		    }
+        }
 
 		// Apply the temp image over the returned image and use the destination x,y coordinates
 		imagecopy($dst_image, $dst_img, $dst_x, $dst_y, 0, 0, $dst_w, $dst_h);

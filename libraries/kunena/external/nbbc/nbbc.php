@@ -211,7 +211,7 @@ $this->tag = false;
 $this->state = BBCODE_LEXSTATE_TEXT;
 if (strlen($this->text) > 0)
 return $this->token = BBCODE_TEXT;
-continue;
+break;
 }
 default:
 $this->tag = false;
@@ -223,11 +223,11 @@ case 91:
 case 123:
 if (preg_match($this->pat_comment, $this->text)) {
 $this->state = BBCODE_LEXSTATE_TEXT;
-continue;
+break;
 }
 if (preg_match($this->pat_comment2, $this->text)) {
 $this->state = BBCODE_LEXSTATE_TEXT;
-continue;
+break;
 }
 if (preg_match($this->pat_wiki, $this->text, $matches)) {
 $this->tag = Array('_name' => 'wiki', '_endtag' => false,
@@ -1840,7 +1840,8 @@ $content = $this->Internal_CollectText($this->stack, $newstart);
 array_splice($this->stack, $start);
 $this->Internal_ComputeCurrentClass();
 $this->Internal_CleanupWSByPoppingStack(@$tag_rule['before_tag'], $this->stack);
-$tag_params['_endtag'] = $end_tag_params['_tag'];
+// $tag_params['_endtag'] = $end_tag_params['_tag'];
+$tag_params['_endtag'] = $end_tag_params;  // patch chdh 2021-07-25
 $tag_params['_hasend'] = true;
 $output = $this->DoTag(BBCODE_OUTPUT, $tag_name,
 @$tag_params['_default'], $tag_params, $content);

@@ -77,6 +77,9 @@ abstract class KunenaError
 	public static function checkDatabaseError()
 	{
 		$db = JFactory::getDBO();
+                if (!method_exists($db, 'getErrorNum')) { // chdh 2024-03-28
+                   return false;                          // An exception has been thrown on error. This check is obsolete.
+                }
 		if ($db->getErrorNum())
 		{
 			$app = JFactory::getApplication();
