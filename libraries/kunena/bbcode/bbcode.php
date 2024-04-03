@@ -24,6 +24,8 @@ jimport('joomla.utilities.string');
 class KunenaBbcode extends NBBC_BBCode
 {
 	public $autolink_disable = 0;
+        public $lexer;
+        public $stack;
 
 	/**
 	 * @var object
@@ -55,9 +57,10 @@ class KunenaBbcode extends NBBC_BBCode
 		$this->SetURLPattern (array($this, 'parseUrl'));
 		$this->SetURLTarget('_blank');
 
-		$dispatcher = JDispatcher::getInstance();
+//              $dispatcher = JDispatcher::getInstance();
 		JPluginHelper::importPlugin('kunena');
-		$dispatcher->trigger( 'onKunenaBbcodeConstruct', array( $this ) );
+//              $dispatcher->trigger( 'onKunenaBbcodeConstruct', array( $this ) );
+                KunenaForever::dispatchEvent( 'onKunenaBbcodeConstruct', array( $this ) );
 	}
 
 	/**
@@ -68,7 +71,7 @@ class KunenaBbcode extends NBBC_BBCode
 	 */
 	public static function getInstance($relative = true)
 	{
-		static $instance = false;
+                static $instance = [];
 
 		if (!isset($instance[intval($relative)]))
 		{
@@ -320,7 +323,7 @@ class KunenaBbcode extends NBBC_BBCode
 
 				// We have a full, complete, and properly-formatted URL, with protocol.
 				// Now we need to apply the $this->url_pattern template to turn it into HTML.
-				$params = JString::parse_url($url);
+                                $params = Joomla\Uri\UriHelper::parse_url($url);
 
 				if (!$invalid && substr($url, 0, 7) == 'mailto:')
 				{
@@ -1657,8 +1660,9 @@ class KunenaBbcodeLibrary extends BBCodeLibrary {
 				// this is important to avoid recursive event behaviour with our own plugins
 				$params->set('ksource', 'kunena');
 				JPluginHelper::importPlugin('content');
-				$dispatcher = JDispatcher::getInstance();
-				$dispatcher->trigger('onContentPrepare', array ('text', &$article, &$params, 0));
+//                              $dispatcher = JDispatcher::getInstance();
+//                              $dispatcher->trigger('onContentPrepare', array ('text', &$article, &$params, 0));
+                                KunenaForever::dispatchEvent('onContentPrepare', array ('text', &$article, &$params, 0));
 				$article->text = JHTML::_('string.truncate', $article->text, $bbcode->output_limit-$bbcode->text_length);
 				$bbcode->text_length += strlen($article->text);
 				$html = $article->text;

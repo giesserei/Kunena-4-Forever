@@ -339,7 +339,7 @@ HTML;
 	 */
 	public function loadMootools()
 	{
-		JHtml::_('behavior.framework', true);
+//              JHtml::_('behavior.framework', true);    // chdh 2024-03-28 temp
 
 		if (JDEBUG || KunenaFactory::getConfig()->debug)
 		{
@@ -1304,7 +1304,7 @@ HTML;
 				}
 			}
 
-			if (!class_exists($classname) && $app->isSite())
+                        if (!class_exists($classname) && $app->isClient('site'))
 			{
 
 				$file = KPATH_SITE . "/template/{$relTmplDirName}/template.php";

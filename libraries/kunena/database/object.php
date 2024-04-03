@@ -146,11 +146,12 @@ abstract class KunenaDatabaseObject extends JObject
 		}
 
 		// Include the Kunena plugins for the on save events.
-		$dispatcher = JDispatcher::getInstance();
+//              $dispatcher = JDispatcher::getInstance();
 		JPluginHelper::importPlugin('kunena');
 
 		// Trigger the onKunenaBeforeSave event.
-		$result = $dispatcher->trigger('onKunenaBeforeSave', array("com_kunena.{$this->_name}", &$table, $isNew));
+//              $result = $dispatcher->trigger('onKunenaBeforeSave', array("com_kunena.{$this->_name}", &$table, $isNew));
+                $result = KunenaForever::dispatchEvent('onKunenaBeforeSave', array("com_kunena.{$this->_name}", &$table, $isNew));
 
 		if (in_array(false, $result, true))
 		{
@@ -199,11 +200,12 @@ abstract class KunenaDatabaseObject extends JObject
 		$table->exists ( $this->_exists );
 
 		// Include the Kunena plugins for the on save events.
-		$dispatcher = JDispatcher::getInstance();
+//              $dispatcher = JDispatcher::getInstance();
 		JPluginHelper::importPlugin('kunena');
 
 		// Trigger the onKunenaBeforeDelete event.
-		$result = $dispatcher->trigger('onKunenaBeforeDelete', array("com_kunena.{$this->_name}", $table));
+//              $result = $dispatcher->trigger('onKunenaBeforeDelete', array("com_kunena.{$this->_name}", $table));
+                KunenaForever::dispatchEvent('onKunenaBeforeDelete', array("com_kunena.{$this->_name}", $table));
 		if (in_array(false, $result, true))
 		{
 			$this->setError($table->getError());

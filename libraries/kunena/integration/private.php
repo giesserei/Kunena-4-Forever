@@ -22,8 +22,9 @@ class KunenaPrivate
 		if (self::$instance === false)
 		{
 			JPluginHelper::importPlugin('kunena');
-			$dispatcher = JDispatcher::getInstance();
-			$classes = $dispatcher->trigger('onKunenaGetPrivate');
+//                      $dispatcher = JDispatcher::getInstance();
+//                      $classes = $dispatcher->trigger('onKunenaGetPrivate');
+                        $classes = KunenaForever::dispatchEvent('onKunenaGetPrivate');
 
 			foreach ($classes as $class)
 			{

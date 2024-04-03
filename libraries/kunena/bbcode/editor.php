@@ -196,9 +196,10 @@ class KunenaBbcodeEditor
 		$this->editor_elements = self::parseXML($xml_file, 'parseHMVCXML');
 
 		// Hook to manipulate the Editor XML like adding buttons
-		$dispatcher = JDispatcher::getInstance();
+//              $dispatcher = JDispatcher::getInstance();
 		JPluginHelper::importPlugin('kunena');
-		$dispatcher->trigger('onKunenaBbcodeEditorInit', array($this));
+//              $dispatcher->trigger('onKunenaBbcodeEditorInit', array($this));
+                KunenaForever::dispatchEvent('onKunenaBbcodeEditorInit', array($this));
 
 		$js = "bbcodeSettings = {
 		previewParserPath:	'',
@@ -241,9 +242,10 @@ class KunenaBbcodeEditor
 		$this->editor_elements = self::parseXML($xml_file, 'parseXML');
 
 		// Hook to manipulate the Editor XML like adding buttons
-		$dispatcher = JDispatcher::getInstance();
+//              $dispatcher = JDispatcher::getInstance();
 		JPluginHelper::importPlugin('kunena');
-		$dispatcher->trigger( 'onKunenaBbcodeEditorInit', array ( $this ) );
+//              $dispatcher->trigger( 'onKunenaBbcodeEditorInit', array ( $this ) );
+                KunenaForever::dispatchEvent( 'onKunenaBbcodeEditorInit', array ( $this ) );
 
 		foreach ($this->editor_elements as $item)
 		{

@@ -32,8 +32,9 @@ class KunenaAccess
 	{
 		KUNENA_PROFILER ? KunenaProfiler::instance()->start('function '.__CLASS__.'::'.__FUNCTION__.'()') : null;
 		JPluginHelper::importPlugin('kunena');
-		$dispatcher = JDispatcher::getInstance();
-		$classes = $dispatcher->trigger('onKunenaGetAccessControl');
+//              $dispatcher = JDispatcher::getInstance();
+//              $classes = $dispatcher->trigger('onKunenaGetAccessControl');
+                $classes = KunenaForever::dispatchEvent('onKunenaGetAccessControl');
 
 		foreach ($classes as $class)
 		{
@@ -387,7 +388,7 @@ window.addEvent('domready', function(){
 		}
 
 		// In backend every logged in user has global admin rights (for now)
-		if (JFactory::getApplication()->isAdmin() && $user->userid == KunenaUserHelper::getMyself()->userid)
+                if (JFactory::getApplication()->isClient('administrator') && $user->userid == KunenaUserHelper::getMyself()->userid)
 		{
 			return true;
 		}
@@ -565,7 +566,7 @@ window.addEvent('domready', function(){
 
 				// Clean up and filter the resulting list by using only array keys.
 				$list = array_keys($list);
-				JArrayHelper::toInteger($list);
+                                Joomla\Utilities\ArrayHelper::toInteger($list);
 				$read[$id] = array_combine($list, $list);
 				unset($read[$id][0]);
 				$app->setUserState("com_kunena.user{$id}_read", $read[$id]);

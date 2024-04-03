@@ -108,27 +108,27 @@ abstract class KunenaMenuHelper
 							break;
 						case 'alias':
 							// If this is an alias use the item id stored in the parameters to make the link.
-							$item->flink = 'index.php?Itemid='.$item->params->get('aliasoptions');
+                                                        $item->flink = 'index.php?Itemid='.$item->getParams()->get('aliasoptions');
 
 							break;
 						default:
 							$router = $app::getRouter();
 
-							if ($router->getMode() == JROUTER_MODE_SEF)
-							{
+//                                                      if ($router->getMode() == JROUTER_MODE_SEF)
+//                                                      {
 								$item->flink = 'index.php?Itemid='.$item->id;
-							}
-							else
-							{
-								$item->flink .= '&Itemid='.$item->id;
-							}
+//                                                      }
+//                                                      else
+//                                                      {
+//                                                              $item->flink .= '&Itemid='.$item->id;
+//                                                      }
 
 							break;
 					}
 
 					if (strcasecmp(substr($item->flink, 0, 4), 'http') && (strpos($item->flink, 'index.php?') !== false))
 					{
-						$item->flink = JRoute::_($item->flink, false, $item->params->get('secure'));
+                                                $item->flink = JRoute::_($item->flink, false, $item->getParams()->get('secure'));
 					}
 					else
 					{
@@ -136,9 +136,9 @@ abstract class KunenaMenuHelper
 					}
 
 					$item->title = htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8');
-					$item->anchor_css = htmlspecialchars($item->params->get('menu-anchor_css', ''), ENT_COMPAT, 'UTF-8');
-					$item->anchor_title = htmlspecialchars($item->params->get('menu-anchor_title', ''), ENT_COMPAT, 'UTF-8');
-					$item->menu_image = $item->params->get('menu_image', '') ? htmlspecialchars($item->params->get('menu_image', ''), ENT_COMPAT, 'UTF-8') : '';
+                                        $item->anchor_css = htmlspecialchars($item->getParams()->get('menu-anchor_css', ''), ENT_COMPAT, 'UTF-8');
+                                        $item->anchor_title = htmlspecialchars($item->getParams()->get('menu-anchor_title', ''), ENT_COMPAT, 'UTF-8');
+                                        $item->menu_image = $item->getParams()->get('menu_image', '') ? htmlspecialchars($item->getParams()->get('menu_image', ''), ENT_COMPAT, 'UTF-8') : '';
 				}
 
 				if (isset($lastitem))

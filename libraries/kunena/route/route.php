@@ -207,7 +207,7 @@ abstract class KunenaRoute
 		{
 			if ($default == null)
 			{
-				$default = $app->isSite() ? 'index.php?option=com_kunena' : 'administrator/index.php?option=com_kunena';
+                                $default = $app->isClient('site') ? 'index.php?option=com_kunena' : 'administrator/index.php?option=com_kunena';
 			}
 
 			$default = self::_($default);
@@ -428,7 +428,7 @@ abstract class KunenaRoute
 		KUNENA_PROFILER ? KunenaProfiler::instance()->start('function '.__CLASS__.'::'.__FUNCTION__.'()') : null;
 		self::$config = KunenaFactory::getConfig ();
 
-		if (JFactory::getApplication()->isAdmin())
+                if (JFactory::getApplication()->isClient('administrator'))
 		{
 			self::$adminApp = true;
 			KUNENA_PROFILER ? KunenaProfiler::instance()->stop('function '.__CLASS__.'::'.__FUNCTION__.'()') : null;
@@ -463,7 +463,9 @@ abstract class KunenaRoute
 		}
 
 		// If values are both in GET and POST, they are only stored in POST
-		foreach (JRequest::get('post') as $key => $value)
+//              foreach (JRequest::get('post') as $key => $value)
+                $post = JFactory::getApplication()->input->post->getArray(array());
+                foreach ($post as $key => $value)
 		{
 			if (in_array($key, array('view', 'layout', 'task')) && !preg_match('/[^a-zA-Z0-9_.]/i', $value))
 			{
@@ -472,7 +474,9 @@ abstract class KunenaRoute
 		}
 
 		// Make sure that request URI is not broken
-		foreach (JRequest::get('get') as $key => $value)
+//              foreach (JRequest::get('get') as $key => $value)
+                $get = JFactory::getApplication()->input->get->getArray(array());
+                foreach ($get as $key => $value)
 		{
 			if (preg_match('/[^a-zA-Z]/', $key))
 			{
@@ -642,6 +646,7 @@ abstract class KunenaRoute
 
 			if (self::$search === false)
 			{
+                                self::$search = [];
 				self::$search['home'] = array();
 				foreach (self::$menu as $item)
 				{
@@ -856,7 +861,7 @@ abstract class KunenaRoute
 
 		if (!isset($cache[$item->id]))
 		{
-			$params = $item->params;
+                        $params = $item->getParams();
 			$catids = $params->get('catids', array());
 
 			if (!is_array($catids))

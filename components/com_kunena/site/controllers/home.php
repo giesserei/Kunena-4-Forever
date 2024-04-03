@@ -27,8 +27,9 @@ class KunenaControllerHome extends KunenaController
 
 		if (!$home)
 		{
-			JRequest::setVar('view', 'category');
-			JRequest::setVar('layout', 'list');
+            JFactory::getApplication()->input->set('view', 'category');
+            JFactory::getApplication()->input->set('layout', 'list');
+
 			//JError::raiseError ( 500, JText::_ ( 'COM_KUNENA_NO_ACCESS' ) );
 
 		}
@@ -65,11 +66,11 @@ class KunenaControllerHome extends KunenaController
 			// Add query variables from shown menu item
 			foreach ($default->query as $var => $value)
 			{
-				JRequest::setVar($var, $value);
+                JFactory::getApplication()->input->set($var, $value);
 			}
 
 			// Remove query variables coming from the home menu item
-			JRequest::setVar('defaultmenu', null);
+                JFactory::getApplication()->input->set('defaultmenu', null);
 
 			// Set active menu item to point the real page
 			$menu->setActive($default->id);

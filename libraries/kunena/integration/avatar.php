@@ -25,8 +25,9 @@ class KunenaAvatar
 		if (self::$instance === false)
 		{
 			JPluginHelper::importPlugin('kunena');
-			$dispatcher = JDispatcher::getInstance();
-			$classes = $dispatcher->trigger('onKunenaGetAvatar');
+//                      $dispatcher = JDispatcher::getInstance();
+//                      $classes = $dispatcher->trigger('onKunenaGetAvatar');
+                        $classes = KunenaForever::dispatchEvent('onKunenaGetAvatar');
 
 			foreach ($classes as $class)
 			{

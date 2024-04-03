@@ -309,12 +309,12 @@ class TableKunenaUsers extends KunenaTable
 
 		// Check for an error message.
 
-		if ($this->_db->getErrorNum())
-		{
-			$this->setError($this->_db->getErrorMsg());
-
-			return false;
-		}
+//              if ($this->_db->getErrorNum())
+//              {
+//                      $this->setError($this->_db->getErrorMsg());
+//
+//                      return false;
+//              }
 
 		// User does not exist (may exist in #__kunena_users, though)
 		if (!$data)

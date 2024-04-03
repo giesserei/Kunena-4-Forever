@@ -100,10 +100,10 @@ abstract class KunenaTable extends JTable
 
 		$row = $this->_db->loadAssoc();
 
-		if ($this->_db->getErrorNum())
-		{
-			throw new RuntimeException($this->_db->getErrorMsg(), $this->_db->getErrorNum());
-		}
+//              if ($this->_db->getErrorNum())
+//              {
+//                      throw new RuntimeException($this->_db->getErrorMsg(), $this->_db->getErrorNum());
+//              }
 
 		if (empty($row))
 		{

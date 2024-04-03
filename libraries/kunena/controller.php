@@ -19,6 +19,8 @@ class KunenaController extends JControllerLegacy
 	public $app = null;
 	public $me = null;
 	public $config = null;
+        public $profiler;
+        public $format;
 
 	public function __construct($config = array())
 	{
@@ -78,7 +80,7 @@ class KunenaController extends JControllerLegacy
 		else
 		{
 			// Base controller.
-			$view = strtolower ( JRequest::getWord ( 'view', $app->isAdmin() ? 'cpanel' : 'home' ) );
+                        $view = strtolower ( JFactory::getApplication()->input->getWord( 'view', $app->isClient('administrator') ? 'cpanel' : 'home' ) );
 		}
 
 		$path = JPATH_COMPONENT . "/controllers/{$view}.php";
@@ -94,7 +96,7 @@ class KunenaController extends JControllerLegacy
 		}
 
 		// Set the name for the controller and instantiate it.
-		if ($app->isAdmin())
+                if ($app->isClient('administrator'))
 		{
 			$class = $prefix . 'AdminController' . ucfirst ( $view );
 			KunenaFactory::loadLanguage('com_kunena.controllers', 'admin');
@@ -305,11 +307,11 @@ class KunenaController extends JControllerLegacy
 		$document = JFactory::getDocument ();
 
 		// Set the default view name and format from the Request.
-		$vName = JRequest::getWord ( 'view', $this->app->isAdmin() ? 'cpanel' : 'home' );
-		$lName = JRequest::getWord ( 'layout', 'default' );
+                $vName = JFactory::getApplication()->input->getWord ( 'view', $this->app->isClient('administrator') ? 'cpanel' : 'home' );
+                $lName = JFactory::getApplication()->input->getWord ( 'layout', 'default' );
 		$vFormat = $document->getType ();
 
-		if ($this->app->isAdmin())
+                if ($this->app->isClient('administrator'))
 		{
 			// Load admin language files
 			KunenaFactory::loadLanguage('com_kunena.install', 'admin');
@@ -368,7 +370,7 @@ class KunenaController extends JControllerLegacy
 
 		if ($view)
 		{
-			if ($this->app->isSite() && $vFormat=='html')
+                        if ($this->app->isClient('site') && $vFormat=='html')
 			{
 				$common = $this->getView ( 'common', $vFormat );
 				$model = $this->getModel ( 'common' );
@@ -393,10 +395,12 @@ class KunenaController extends JControllerLegacy
 			if ($vFormat=='html')
 			{
 				JPluginHelper::importPlugin('kunena');
-				$dispatcher = JDispatcher::getInstance();
-				$dispatcher->trigger('onKunenaDisplay', array('start', $view));
+//                              $dispatcher = JDispatcher::getInstance();
+//                              $dispatcher->trigger('onKunenaDisplay', array('start', $view));
+                                KunenaForever::dispatchEvent('onKunenaDisplay', array('start', $view));
 				$view->displayAll ();
-				$dispatcher->trigger('onKunenaDisplay', array('end', $view));
+//                              $dispatcher->trigger('onKunenaDisplay', array('end', $view));
+                                KunenaForever::dispatchEvent('onKunenaDisplay', array('end', $view));
 			}
 			else
 			{

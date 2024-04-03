@@ -26,7 +26,7 @@ abstract class KunenaError
 		{
 			self::$format = JFactory::getApplication()->input->getWord('format', 'html');
 			self::$debug = JDEBUG || KunenaFactory::getConfig ()->debug;
-			self::$admin = JFactory::getApplication()->isAdmin();
+                        self::$admin = JFactory::getApplication()->isClient('administrator');
 			register_shutdown_function(array('KunenaError', 'shutdownHandler'), self::$debug || self::$admin || KUNENA_PROFILER);
 
 			if (!self::$debug)
@@ -37,7 +37,8 @@ abstract class KunenaError
 			@ini_set('display_errors', 1);
 			self::$handler = true;
 			@error_reporting(E_ALL | E_STRICT);
-			JFactory::getDbo()->setDebug(true);
+                        if (method_exists(JFactory::getDbo(), 'setDebug')) {  // chdh 2024-03-28
+                           JFactory::getDbo()->setDebug(true); }
 			set_error_handler(array('KunenaError', 'errorHandler'));
 
 			self::$enabled++;
@@ -84,7 +85,7 @@ abstract class KunenaError
 		{
 			$app = JFactory::getApplication();
 
-			if (JFactory::getApplication()->isAdmin())
+                        if (JFactory::getApplication()->isClient('administrator'))
 			{
 				$app->enqueueMessage ($db->getErrorMsg(), 'error' );
 			}

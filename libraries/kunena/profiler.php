@@ -44,7 +44,7 @@ class KunenaProfiler extends JProfiler
 	public function start($name)
 	{
 		$item = KunenaProfilerItem::getInstance($name);
-		$item->start($this->getmicrotime());
+                $item->start(microtime(true));
 		$this->_heap[] = $item;
 	}
 
@@ -52,7 +52,7 @@ class KunenaProfiler extends JProfiler
 	{
 		$item = KunenaProfilerItem::getInstance($name);
 
-		return $this->getmicrotime() - $item->getStartTime();
+                return microtime(true) - $item->getStartTime();
 	}
 
 	public function stop($name)
@@ -64,7 +64,7 @@ class KunenaProfiler extends JProfiler
 			trigger_error(__CLASS__.'::'.__FUNCTION__."('$name') is missing start()");
 		}
 
-		$delta = $item->stop($this->getmicrotime());
+                $delta = $item->stop(microtime(true));
 
 		if (end($this->_heap))
 		{
@@ -106,6 +106,10 @@ class KunenaProfilerItem
 	 */
 	protected static $_instances = array();
 	public $start = array();
+        public $name;
+        public $calls;
+        public $total;
+        public $external;
 
 	public function __construct($name)
 	{

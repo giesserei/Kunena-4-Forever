@@ -155,6 +155,11 @@ abstract class KunenaControllerBase implements Serializable
 		return serialize(array($this->input, $this->options));
 	}
 
+        public function __serialize()
+        {
+           return $this->serialize();
+        }
+
 	/**
 	 * Unserialize the controller.
 	 *
@@ -179,6 +184,12 @@ abstract class KunenaControllerBase implements Serializable
 
 		return $this;
 	}
+
+        public function __unserialize($input)
+        {
+           list($this->input, $this->options) = unserialize($input);
+           return $this->input;
+        }
 
 	/**
 	 * Load the application object.

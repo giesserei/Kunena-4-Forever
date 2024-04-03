@@ -24,8 +24,9 @@ class KunenaLogin
 	public function __construct()
 	{
 		JPluginHelper::importPlugin('kunena');
-		$dispatcher = JDispatcher::getInstance();
-		$classes = $dispatcher->trigger('onKunenaGetLogin');
+//              $dispatcher = JDispatcher::getInstance();
+//              $classes = $dispatcher->trigger('onKunenaGetLogin');
+                $classes = KunenaForever::dispatchEvent('onKunenaGetLogin');
 
 		foreach ($classes as $class)
 		{

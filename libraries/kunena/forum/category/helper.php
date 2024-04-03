@@ -802,7 +802,11 @@ abstract class KunenaForumCategoryHelper
 		$db = JFactory::getDBO ();
 		$query = "SELECT * FROM #__kunena_categories ORDER BY ordering, name";
 		$db->setQuery ( $query );
-		$instances = (array) $db->loadObjectList('id', 'KunenaForumCategory');
+//              $instances = (array) $db->loadObjectList('id', 'KunenaForumCategory');
+                $instances = [];
+                foreach ($db->loadAssocList('id') as $id => $data) {
+                   $instances[$id] = new KunenaForumCategory($data);
+                }
 		KunenaError::checkDatabaseError ();
 
 		// TODO: remove this by adding level into table

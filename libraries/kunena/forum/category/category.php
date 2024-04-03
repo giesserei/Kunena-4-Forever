@@ -551,6 +551,7 @@ class KunenaForumCategory extends KunenaDatabaseObject
 
 		if ($this->_channels === false)
 		{
+                        $this->_channels = [];
 			$this->_channels['none'] = array();
 
 			if ($this->published != 1 || $this->parent_id == 0 || (!$this->numTopics && $this->locked))

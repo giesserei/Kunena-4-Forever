@@ -1025,7 +1025,7 @@ $this->root_class = 'block';
 $this->lost_start_tags = Array();
 $this->start_tags = Array();
 $this->tag_marker = '[';
-$this->allow_ampsersand = false;
+$this->allow_ampersand = false;
 $this->current_class = $this->root_class;
 $this->debug = false;
 $this->ignore_newlines = false;
@@ -1389,7 +1389,7 @@ case 'double': $value = (string)$value; break;
 case 'string': break;
 default: $value = ""; break;
 }
-if (strlen(@$matches[3]))
+if (strlen($matches[3] ?? ''))
 $flags = array_flip(str_split($matches[3]));
 else $flags = Array();
 if (!isset($flags['v'])) {
@@ -1493,11 +1493,11 @@ if (isset($this->start_tags[$tag_name])
 $pos = array_pop($this->start_tags[$tag_name]);
 else $pos = -1;
 if ($pos < 0) return false;
-$newpos = $this->Internal_CleanupWSByIteratingPointer(@$this->tag_rules[$tag_name]['after_tag'],
+$newpos = $this->Internal_CleanupWSByIteratingPointer($this->tag_rules[$tag_name]['after_tag'] ?? '',
 $pos+1, $this->stack);
 $delta = $newpos - ($pos+1);
 $output = $this->Internal_GenerateOutput($newpos);
-$newend = $this->Internal_CleanupWSByIteratingPointer(@$this->tag_rules[$tag_name]['before_endtag'],
+$newend = $this->Internal_CleanupWSByIteratingPointer($this->tag_rules[$tag_name]['before_endtag'] ?? '',
 0, $output);
 $output = $this->Internal_CollectTextReverse($output, count($output) - 1, $newend);
 while ($delta-- > 0)
@@ -1655,7 +1655,7 @@ return false;
 }
 return true;
 }
-switch (@$tag_rule['mode']) {
+switch ($tag_rule['mode'] ?? '') {
 default:
 case BBCODE_MODE_SIMPLE:
 $result = true;
@@ -1892,7 +1892,7 @@ BBCODE_STACK_CLASS => $this->current_class,
 );
 return;
 }
-if (@$tag_rule['content'] == BBCODE_VERBATIM) {
+if (($tag_rule['content'] ?? '') == BBCODE_VERBATIM) {
 $this->Internal_ProcessVerbatimTag($tag_name, $tag_params, $tag_rule);
 return;
 }
@@ -1930,12 +1930,12 @@ return;
 $start_tag_node = array_pop($this->stack);
 $start_tag_params = $start_tag_node[BBCODE_STACK_TAG];
 $this->Internal_ComputeCurrentClass();
-$this->Internal_CleanupWSByPoppingStack(@$this->tag_rules[$tag_name]['before_tag'], $this->stack);
+$this->Internal_CleanupWSByPoppingStack($this->tag_rules[$tag_name]['before_tag'] ?? '', $this->stack);
 $start_tag_params['_endtag'] = $tag_params['_tag'];
 $start_tag_params['_hasend'] = true;
 $output = $this->DoTag(BBCODE_OUTPUT, $tag_name, @$start_tag_params['_default'],
 $start_tag_params, $contents);
-$this->Internal_CleanupWSByEatingInput(@$this->tag_rules[$tag_name]['after_endtag']);
+$this->Internal_CleanupWSByEatingInput($this->tag_rules[$tag_name]['after_endtag'] ?? '');
 $this->stack[] = Array(
 BBCODE_STACK_TOKEN => BBCODE_TEXT,
 BBCODE_STACK_TEXT => $output,

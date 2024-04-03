@@ -24,8 +24,9 @@ class KunenaIntegrationActivity
 	public function __construct()
 	{
 		JPluginHelper::importPlugin('kunena');
-		$dispatcher = JDispatcher::getInstance();
-		$classes = $dispatcher->trigger('onKunenaGetActivity');
+//              $dispatcher = JDispatcher::getInstance();
+//              $classes = $dispatcher->trigger('onKunenaGetActivity');
+                $classes = KunenaForever::dispatchEvent('onKunenaGetActivity');
 
 		foreach ($classes as $class)
 		{

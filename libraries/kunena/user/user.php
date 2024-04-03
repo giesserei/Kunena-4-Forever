@@ -10,6 +10,8 @@
  **/
 defined ('_JEXEC') or die ();
 
+use Joomla\CMS\Object\CMSObject;
+
 jimport ( 'joomla.utilities.date' );
 
 /**
@@ -61,7 +63,7 @@ jimport ( 'joomla.utilities.date' );
  * @property	string	$bebo
  * @property	int		$thankyou
 */
-class KunenaUser extends JObject
+class KunenaUser extends CMSObject
 {
 	// Global for every instance
 	protected static $_ranks = null;
@@ -1325,12 +1327,15 @@ class KunenaUser extends JObject
 			return $this->userid;
 		}
 
+                if (version_compare(JVERSION, '4.0', '<'))
+                {
 		$trace = debug_backtrace();
 		trigger_error(
 			'Undefined property via __get(): ' . $name .
 			' in ' . $trace[0]['file'] .
 			' on line ' . $trace[0]['line'],
 			E_USER_NOTICE);
+                }
 
 		return null;
 	}

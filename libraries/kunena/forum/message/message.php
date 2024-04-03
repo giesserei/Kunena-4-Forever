@@ -1258,13 +1258,14 @@ class KunenaForumMessage extends KunenaDatabaseObject
 		}
 
 		// Activity integration
-		$dispatcher = JDispatcher::getInstance();
+//              $dispatcher = JDispatcher::getInstance();
 		JPluginHelper::importPlugin('finder');
 		$activity = KunenaFactory::getActivityIntegration();
 
 		if ($postDelta < 0)
 		{
-			$dispatcher->trigger('onDeleteKunenaPost', array(array($this->id)));
+//                      $dispatcher->trigger('onDeleteKunenaPost', array(array($this->id)));
+                        KunenaForever::dispatchEvent('onDeleteKunenaPost', array(array($this->id)));
 			$activity->onAfterDelete($this);
 		}
 		elseif ($postDelta > 0)

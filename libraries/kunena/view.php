@@ -38,12 +38,12 @@ class KunenaView extends JViewLegacy
 		$this->ktemplate = KunenaFactory::getTemplate();
 
 		// Set the default template search path
-		if ($this->app->isSite() && !isset($config['template_path']))
+                if ($this->app->isClient('site') && !isset($config['template_path']))
 		{
 			$config['template_path'] = $this->ktemplate->getTemplatePaths("html/$name", true);
 		}
 
-		if ($this->app->isAdmin())
+                if ($this->app->isClient('administrator'))
 		{
 			$templateAdmin = KunenaFactory::getAdminTemplate();
 			$templateAdmin->initialize();
@@ -53,7 +53,7 @@ class KunenaView extends JViewLegacy
 
 		parent::__construct($config);
 
-		if ($this->app->isSite())
+                if ($this->app->isClient('site'))
 		{
 			// Add another template file lookup path specific to the current template
 			$fallback = JPATH_THEMES . "/{$this->app->getTemplate()}/html/com_kunena/{$this->ktemplate->name}/{$this->getName()}";
@@ -61,10 +61,10 @@ class KunenaView extends JViewLegacy
 		}
 
 		// Use our own browser side cache settings.
-		JResponse::allowCache(false);
-		JResponse::setHeader( 'Expires', 'Mon, 1 Jan 2001 00:00:00 GMT', true );
-		JResponse::setHeader( 'Last-Modified', gmdate("D, d M Y H:i:s") . ' GMT', true );
-		JResponse::setHeader( 'Cache-Control', 'no-store, must-revalidate, post-check=0, pre-check=0', true );
+                JFactory::getApplication()->allowCache(false);
+                JFactory::getApplication()->setHeader( 'Expires', 'Mon, 1 Jan 2001 00:00:00 GMT', true );
+                JFactory::getApplication()->setHeader( 'Last-Modified', gmdate("D, d M Y H:i:s") . ' GMT', true );
+                JFactory::getApplication()->setHeader( 'Cache-Control', 'no-store, must-revalidate, post-check=0, pre-check=0', true );
 	}
 
 	public function displayAll()
@@ -106,7 +106,7 @@ class KunenaView extends JViewLegacy
 		$home = $menu->getItems('type', 'alias');
 		$juricurrent = JURI::current();
 
-		if (JFactory::getApplication()->isAdmin())
+                if (JFactory::getApplication()->isClient('administrator'))
 		{
 			$this->displayLayout();
 		}
@@ -808,12 +808,12 @@ class KunenaView extends JViewLegacy
 		{
 			// TODO: allow translations/overrides
 			$lang = JFactory::getLanguage();
-			$length = JString::strlen($lang->getName());
+                        $length = mb_strlen($lang->getName(), 'UTF-8');
 			$length = 137 - $length;
 
-			if (JString::strlen($description) > $length)
+                        if (mb_strlen($description, 'UTF-8') > $length)
 			{
-				$description = JString::substr($description, 0, $length) . '...';
+                                $description = mb_substr($description, 0, $length, 'UTF-8') . '...';
 			}
 
 			$this->document->setMetadata('description', $description);
